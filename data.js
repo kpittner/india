@@ -203,6 +203,7 @@ templates.catalogBlock = [
 
 templates.categoryMuffins = [
   '<div class="catalogWrapper">',
+  '<h2>Muffins</h2>',
   '<div class="catalogProductBlock">',
   '<div class="catalogProductBlockImage">',
   '<%= productThumb %>',
@@ -218,6 +219,9 @@ templates.categoryMuffins = [
   '</div>',
   '<div class="catalogProductAddToCartBlock">',
   '<button class="catalogAddToCartButton">Add To Cart</button>',
+  '</div>',
+  '<div id="productCartBlock">',
+    '<button id="productAddToWishListButton">Add to Wish List</button>',
   '</div>',
   '</div>'
 ].join("");
@@ -239,6 +243,9 @@ templates.categoryCigars = [
   '</div>',
   '<div class="catalogProductAddToCartBlock">',
   '<button class="catalogAddToCartButton">Add To Cart</button>',
+  '</div>',
+  '<div id="productCartBlock">',
+    '<button id="productAddToWishListButton">Add to Wish List</button>',
   '</div>',
   '</div>'
 ].join("");
