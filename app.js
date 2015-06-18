@@ -94,6 +94,7 @@ var page = {
           $('#productPagePairingImage').attr('data', el.productTitle);
         }
       });
+      page.refreshReviews();
     });
 
     $('#productPage').on('click', '#productAddToCartButton', function(e) {
@@ -101,7 +102,7 @@ var page = {
       $('#cartPlusOne').fadeIn().removeClass('productAddedStarting').addClass('productAddedAnimate');
       setTimeout(function(){
         $('#cartPlusOne').removeClass('productAddedAnimate').addClass('productAddedStarting');
-      }, 1000);
+      }, 500);
       var newProduct = page.getProductFromProductPage(this);
       console.log(newProduct);
       $.ajax({
@@ -122,7 +123,7 @@ var page = {
      })
     });
 
-    $('#pageWrapper').on('click', '#catalogAddToCartButton', function(e) {
+    $('#pageWrapper').on('click', '.catalogAddToCartButton', function(e) {
       e.preventDefault();
       $('#cartPlusOne').fadeIn().removeClass('productAddedStarting').addClass('productAddedAnimate');
       setTimeout(function(){
@@ -181,6 +182,31 @@ var page = {
       $('#catalogPage').addClass('activePage');
     });
 
+    $('#cartClearButton').on('click', function(e){
+      e.preventDefault();
+      var cartItemId;
+      $('.cartItem').each(function(idx,el,arr){
+        cartItemId = $(el).data('id');
+        page.deleteItem(cartItemId);
+      });
+    });
+
+    $('body').on('click', '#catalogMuffinsButton', function(e) {
+      e.preventDefault();
+      $('#cartPage').removeClass('activePage');
+      $('#productPage').removeClass('activePage');
+      $('#catalogPage').removeClass('activePage');
+      $('#categoryMuffinPage').addClass('activePage');
+    });
+    //
+    // createMuffinCatalog: function() {
+    //   _.each(products, function(el, idx, arr) {
+    //     if ('category_id' === "Muffins") {
+    //     page.loadTemplate('categoryMuffins', products[idx], $('#catalogPageContent'));
+    //   }
+    //   });
+    // },
+
     $('#productPage').on('submit', '#productReviewsForm', function(e){
       e.preventDefault();
       if ($('#productReviewsFormComment textarea').val().trim().length > 0) {
@@ -232,18 +258,28 @@ var page = {
     });
   },
 
+  deleteAllItems: function() {
+    $.ajax({
+      url: page.urlCart,
+      method: 'DELETE',
+      success: function (data) {
+        page.refreshCart();
+      }
+    });
+  },
+
   deleteItem: function(deleteId) {
     $.ajax({
       url: page.urlCart + "/" + deleteId,
       method: 'DELETE',
       success: function (data) {
-        console.log('Item deleted');
         page.refreshCart();
       }
     });
   },
 
   refreshCart: function() {
+    console.log('Cart refreshed!');
     $.ajax ({
       url: page.urlCart,
       method: 'GET',
@@ -372,6 +408,7 @@ var page = {
             page.loadTemplate('productReview', el, $('#productReviewsBlock'));
           }
         });
+        $('#productReviewsFormUsername').text($username);
       },
       error: function(err) {
         console.log("error");
